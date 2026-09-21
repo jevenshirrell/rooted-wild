@@ -1,0 +1,23 @@
+{
+  "name": "express-mvc-starter",
+  "version": "1.0.0",
+  "description": "Node.js Express project with MVC structure",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.0"
+  },
+  "__comments": {
+    "scripts": "The 'start' script runs the server normally for production. The 'dev' script uses nodemon to auto-restart the server during development when files change.",
+    "dependencies": "Express is the core web framework. Dotenv loads environment variables from the .env file.",
+    "devDependencies": "Morgan logs HTTP requests to the console for debugging. Nodemon watches for file changes."
+  }
+}
