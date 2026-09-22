@@ -4,6 +4,8 @@ const Observation = require('../models/observation.js')
 
 const router = Router()
 
+let nextId = 0
+
 
 // READ --- 200/404
 router.get('/', async (req, res) => {

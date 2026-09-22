@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const REQUIRED = ['NODE_ENV', 'PORT', 'MONGODB_URI']
+const REQUIRED = ['NODE_ENV', 'PORT', 'MONGODB_URI', 'CLOUD_NAME', 'UPLOAD_PRESET']
 const missing = REQUIRED.filter(key => !process.env[key])
 
 
@@ -14,5 +14,7 @@ module.exports = {
     nodeEnv:process.env.NODE_ENV,
     port:Number(process.env.PORT),
     mongoUri:process.env.MONGODB_URI,
+    cloudName:process.env.CLOUD_NAME,
+    uploadPreset:process.env.UPLOAD_PRESET,
     isProduction:process.env.NODE_ENV === 'production'
 }

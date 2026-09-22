@@ -15,6 +15,9 @@
   "devDependencies": {
     "nodemon": "^3.0.0"
   },
+  "nodemonConfig": {
+    "ignore": ["public/scripts/*"]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jevenshirrell/fieldnote.git"

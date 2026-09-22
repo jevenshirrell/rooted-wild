@@ -1,0 +1,28 @@
+@import "tailwindcss";
+/* Setup */
+:root{
+    --bg: #0d1f22ff;
+    --panel: #264027ff;
+    --card: #3c5233ff;
+    --text: #6f732fff;
+    --accent: #b38a58ff;
+}
+
+@font-face {
+    font-family: "Satoshi";
+    src: url('../fonts/Satoshi-Variable.ttf')
+}
+
+/* tailwind */
+@theme {
+    --default-font-family: "Satoshi";
+}
+
+/* Defaults */
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: "Satoshi";
+    font-weight: 700;
+    font-size: 1.5rem;
+}
