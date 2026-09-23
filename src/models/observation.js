@@ -10,9 +10,9 @@ const observationSchema = new mongoose.Schema({
     time:{type:Date, required:true},
     photos:{type:[String]},
     timesSeen:{type:Number, default:1},
-    user:{type:String, required:true},
+    user:{type:String/*, required:true */},
     visibility:{type:String, default:'private'},
-    id:{type:Number, required:true}
+    id:{type:Number, default:0}
 }, {timestamps:true})
 
 

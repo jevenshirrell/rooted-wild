@@ -2,6 +2,7 @@ const express = require('express')
 // const mongoose = require('mongoose')
 const obsvRoutes = require('./routes/observation.routes.js')
 const viewRoutes = require('./routes/views.routes.js')
+const configRoutes = require('./routes/config.routes.js')
 
 
 const app = express()
@@ -18,5 +19,8 @@ app.use('/', viewRoutes)
 
 // CRUD Responses: Create, Read, Update, Delete
 app.use('/api/v1/observations', obsvRoutes)
+
+// api config
+app.use('/api/v1/config', configRoutes)
 
 module.exports = app
