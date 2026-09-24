@@ -32,15 +32,13 @@
   * Photo(s)  
   * Times seen  
   * User  
-  * Visibility  
 * Ownership  
   * Each user owns their own observations and can publish them for others to see  
-* Roles  
+* Roles 
+  * Viewer
+    * View all observations
   * User  
-    * Upload their own observations  
-    * View other public observations  
+    * Upload and edit their own observations  
     * See how many of each species you’ve observed (specific route)  
-  * Approver  
-    * Can approve public uploads  
   * Admin  
-    * View and delete every observation
+    * Update, edit, and delete every observation
