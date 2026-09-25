@@ -9,13 +9,18 @@ async function findAll() {
 }
 
 async function findOne(id) {
-    const obsv = await Observation.find({id:id})
+    if (!Number.isFinite(id)) throw new ApiError(400, "ID must be a number")
+    const obsv = await Observation.findOne({id:id})
     if (!obsv) throw new ApiError(404, "Observation not found")
     return obsv
 }
 
 async function create(data) {
-    return Observation.create({id:String(nextId++), ...data})
+    const newObsv = new Observation({id:String(nextId++), ...data})
+    // TODO: show what fields are missing
+    try {await newObsv.validate()} catch {throw new ApiError(400, "Request missing required fields")}
+    await newObsv.save()
+    return newObsv
 }
 
 async function replace(id, data) {
@@ -30,9 +35,15 @@ async function update(id, data) {
     return obsv
 }
 
-async function remove(id) {
+async function remove(user, id) {
+    if (!user) throw new ApiError(401, 'Unauthorized Request')
+    const userObj = JSON.parse(user)
+
     const obsv = await Observation.findOneAndDelete({id:id})
     if (!obsv) throw new ApiError(404, 'Observation not found')
+    console.log(obsv.user)
+    console.log(userObj)
+    if (userObj.name == obsv.user.name && userObj.uid == obsv.user.uid) throw new ApiError(403, "You do not own this observation")
     return obsv
 }
 

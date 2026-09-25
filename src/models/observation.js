@@ -5,7 +5,10 @@ const observationSchema = new mongoose.Schema({
     species:{type:String, required:true},
     location:{
         type:{type:String, enum:['Point'], required:true},
-        coordinates:{type:[Number], required:true}
+        coordinates:{
+            latitude:{type:Number, required:true},
+            longitude:{type:Number, required:true}
+        }
     },
     time:{type:Date, required:true},
     photos:{type:[String]},

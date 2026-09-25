@@ -23,4 +23,9 @@ app.use('/api/v1/observations', obsvRoutes)
 // api config
 app.use('/api/v1/config', configRoutes)
 
+// api 404
+app.all("/api/v1/*", (req, res) => {
+    res.status(404).json({success:false, error:{message:"Route not found"}})
+})
+
 module.exports = app

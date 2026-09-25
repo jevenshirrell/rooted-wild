@@ -20,10 +20,10 @@ $(async function () {
                 species:$("#speciesName").val(),
                 location:{
                     type:"Point",
-                    coordinates:[
-                        Number($("#latitude").val()),
-                        Number($("#longitude").val())
-                    ]
+                    coordinates:{
+                        latitude:Number($("#latitude").val()),
+                        longitude:Number($("#longitude").val())
+                    }
                 },
                 time:new Date($("#date").val()),
                 photos:[]
