@@ -31,11 +31,11 @@ $(async function () {
 
             // upload image to cloudinary
             const file = $('#image')[0].files[0]
-            const uploadURL = `https://api.cloudinary.com/v1_1/${configData.cloudName}/image/upload`
+            const uploadURL = `https://api.cloudinary.com/v1_1/${configData.data[0].cloudName}/image/upload`
             
             const uploadBody = new FormData()
             uploadBody.append('file', file)
-            uploadBody.append('upload_preset', configData.uploadPreset)
+            uploadBody.append('upload_preset', configData.data[0].uploadPreset)
 
             try {
                 const uploadRes = await fetch(uploadURL, {

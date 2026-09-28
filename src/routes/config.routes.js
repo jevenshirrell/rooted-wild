@@ -8,8 +8,11 @@ const router = Router()
 
 router.get('/', (req, res) => {
     res.json({
-        cloudName:cloudName,
-        uploadPreset:uploadPreset
+        success:true,
+        data:[{
+            cloudName:cloudName,
+            uploadPreset:uploadPreset
+        }]
     })
 })
 
