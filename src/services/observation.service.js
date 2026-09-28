@@ -23,15 +23,25 @@ async function create(data) {
     return newObsv
 }
 
-async function replace(id, data) {
+async function replace(user, id, data) {
+    if (!user) throw new ApiError(401, 'Unauthorized Request')
+    const userObj = JSON.parse(user)
+
     const obsv = await Observation.findOneAndReplace({id:id}, data)
     if (!obsv) throw new ApiError(404, 'Observation not found')
+    if (userObj.name == obsv.user.name && userObj.uid == obsv.user.uid) throw new ApiError(403, "You do not own this observation")
+    
     return obsv
 }
 
-async function update(id, data) {
+async function update(user, id, data) {
+    if (!user) throw new ApiError(401, 'Unauthorized Request')
+    const userObj = JSON.parse(user)
+
     const obsv = await Observation.findOneAndUpdate({id:id}, data)
     if (!obsv) throw new ApiError(404, 'Observation not found')
+    if (userObj.name == obsv.user.name && userObj.uid == obsv.user.uid) throw new ApiError(403, "You do not own this observation")
+
     return obsv
 }
 
@@ -41,9 +51,8 @@ async function remove(user, id) {
 
     const obsv = await Observation.findOneAndDelete({id:id})
     if (!obsv) throw new ApiError(404, 'Observation not found')
-    console.log(obsv.user)
-    console.log(userObj)
     if (userObj.name == obsv.user.name && userObj.uid == obsv.user.uid) throw new ApiError(403, "You do not own this observation")
+
     return obsv
 }
 

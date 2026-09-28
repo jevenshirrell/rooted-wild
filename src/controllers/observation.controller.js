@@ -18,12 +18,12 @@ const create = asyncHandler(async (req, res) => {
 })
 
 const replace = asyncHandler(async (req, res) => {
-    const obsv = await obsvService.replace(req.params.id, req.body)
+    const obsv = await obsvService.replace(JSON.stringify(req.get('user')), req.params.id, req.body)
     res.status(200).json({success:true, data:obsv})
 })
 
 const update = asyncHandler(async (req, res) => {
-    const obsv = await obsvService.update(req.params.id, req.body)
+    const obsv = await obsvService.update(JSON.stringify(req.get('user')), req.params.id, req.body)
     res.status(200).json({success:true, data:obsv})
 })
 
