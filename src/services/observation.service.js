@@ -9,7 +9,7 @@ async function findAll() {
 }
 
 async function findOne(id) {
-    if (!Number.isFinite(id)) throw new ApiError(400, "ID must be a number")
+    if (!/^-?\d+$/.test(id)) throw new ApiError(400, "ID must be a number")
     const obsv = await Observation.findOne({id:id})
     if (!obsv) throw new ApiError(404, "Observation not found")
     return obsv
