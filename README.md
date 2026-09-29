@@ -34,7 +34,7 @@ To run this project, you will need to add the following environment variables to
 
 `CLOUDINARY_KEY` - Cloudinary API key
 
-`CLOUDINARY_KEY` - Cloudinary API secret
+`CLOUDINARY_SECRET` - Cloudinary API secret
 
 ## Deployment
 
