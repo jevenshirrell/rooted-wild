@@ -64,10 +64,35 @@ Returns the API status. Response: `200 OK`
   GET /api/v1/observations
 ```
 
-Returns every observation. Response: `200 OK`
+Returns every observation, optionally filtered and sorted. Response: `200 OK`
 
 ```json
 { "success": true, "data": [] }
+```
+
+**Query parameters**
+
+| Parameter | Type   | Description                                                                 |
+| :-------- | :----- | :-------------------------------------------------------------------------- |
+| `species` | string | Filter by exact species match.                                              |
+| `sort`    | string | Sort field. Prefix with `-` for descending order (e.g. `-createdAt`).       |
+
+**Allowed sort fields:** `createdAt`, `timesSeen`, `id`, `species`, `time`
+
+**Allowed filter fields:** `species`
+
+**Examples**
+
+```http
+  GET /api/v1/observations?species=American%20Beaver
+  GET /api/v1/observations?sort=-createdAt
+  GET /api/v1/observations?species=oak&sort=time
+```
+
+Error response: `400 Bad Request`
+
+```json
+{ "success": false, "error": { "message": "Invalid sort field" } }
 ```
 
 #### Get one observation
