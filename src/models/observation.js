@@ -11,7 +11,9 @@ const observationSchema = new mongoose.Schema({
         }
     },
     time:{type:Date, required:true},
-    photos:{type:[String]},
+    photos:[
+        {url:{type:String, required:true}, publicId:{type:String, required:true}}
+    ],
     timesSeen:{type:Number, default:1},
     user:{
         name:{type:String, default:""},

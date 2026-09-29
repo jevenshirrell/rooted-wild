@@ -45,8 +45,8 @@ $(async function () {
                 if (!uploadRes.ok) new Error(uploadRes.statusText)
 
                 const data = await uploadRes.json()
-                console.log(data.secure_url)
-                observation.photos.push(data.secure_url)
+                // console.log(data.secure_url)
+                observation.photos.push({url:data.secure_url, publicId:data.public_id})
 
             } catch (err) {
                 console.log(err.message)

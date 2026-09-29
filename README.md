@@ -7,7 +7,7 @@ An API used to track nature photos
 
 **Client:** HTML, TailwindCSS
 
-**Server:** Node, Express, Mongoose
+**Server:** Node, Express, Mongoose, Cloudinary
 
 
 ## Installation
@@ -31,6 +31,10 @@ To run this project, you will need to add the following environment variables to
 `CLOUD_NAME` - Cloudinary cloud name
 
 `UPLOAD_PRESET` - Cloudinary upload preset name
+
+`CLOUDINARY_KEY` - Cloudinary API key
+
+`CLOUDINARY_KEY` - Cloudinary API secret
 
 ## Deployment
 
@@ -84,16 +88,18 @@ Response: `200 OK` or `404 Not Found`
   POST /api/v1/observations
 ```
 
-| Body                    | Type       | Description                                  |
-| :---------------------- | :--------- | :------------------------------------------- |
-| `species`               | `string`   | **Required**. Species observed               |
-| `location.type`         | `string`   | **Required**. Must be `"Point"`              |
-| `location.coordinates.latitude`  | `number` | **Required**. Latitude of the sighting |
-| `location.coordinates.longitude` | `number` | **Required**. Longitude of the sighting |
-| `time`                  | `date`     | **Required**. When it was observed (ISO 8601) |
-| `photos`                | `string[]` | Optional. Photo URLs                         |
-| `timesSeen`             | `number`   | Optional. Defaults to `1`                    |
-| `user.name`             | `string`   | Optional. Name of the observer               |
+| Body                              | Type       | Description                                    |
+| :--------------------------------- | :--------- | :---------------------------------------------- |
+| `species`                          | `string`   | **Required**. Species observed                  |
+| `location.type`                    | `string`   | **Required**. Must be `"Point"`                  |
+| `location.coordinates.latitude`    | `number`   | **Required**. Latitude of the sighting           |
+| `location.coordinates.longitude`   | `number`   | **Required**. Longitude of the sighting          |
+| `time`                             | `date`     | **Required**. When it was observed (ISO 8601)    |
+| `photos`                           | `object[]` | Optional. Array of `{ url, publicId }` objects   |
+| `photos[].url`                     | `string`   | **Required** (if photo provided). Photo URL      |
+| `photos[].publicId`                | `string`   | **Required** (if photo provided). Cloudinary public ID |
+| `timesSeen`                        | `number`   | Optional. Defaults to `1`                        |
+| `user.name`                        | `string`   | Optional. Name of the observer                   |
 
 Example body:
 
@@ -105,7 +111,9 @@ Example body:
     "coordinates": { "latitude": 33.45, "longitude": -112.07 }
   },
   "time": "2026-09-20T14:30:00Z",
-  "photos": ["https://example.com/hawk.jpg"],
+  "photos": [
+    { "url": "https://example.com/hawk.jpg", "publicId": "hawk_123" }
+  ],
   "timesSeen": 2,
   "user": { "name": "Sam" }
 }
