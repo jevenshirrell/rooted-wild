@@ -1,0 +1,266 @@
+{
+  "info": {
+    "_postman_id": "1c1877e9-2ce3-4a3d-a057-c3473ba55bd6",
+    "name": "First REST API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57106528",
+    "_collection_link": "https://go.postman.co/collection/57106528-1c1877e9-2ce3-4a3d-a057-c3473ba55bd6?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Observations",
+      "item": [
+        {
+          "name": "Successful Paths",
+          "item": [
+            {
+              "name": "Create",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"species\":\"Cole\",\r\n    \"location\":{\r\n        \"type\":\"Point\",\r\n        \"coordinates\":{\r\n            \"longitude\":10.01,\r\n            \"latitude\":10.01\r\n        }\r\n    },\r\n    \"time\":\"2026-09-17T20:31:00.000Z\",\r\n    \"user\":{\"name\":\"admin\"},\r\n    \"photos\":[\"https://res.cloudinary.com/k5ab8993/image/upload/v1790281910/gedw87xkmctaumumlivy.jpg\"]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/observations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "observations"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/observations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "observations"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get one",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/observations/1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "observations",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"species\":\"Not Plains Bison\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/observations/1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "observations",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/observations/17",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "observations",
+                    "17"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Error Cases",
+          "item": [
+            {
+              "name": "Nonexistent ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/observations/200",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "observations",
+                    "200"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Malformed ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/observations/w",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "observations",
+                    "w"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Invalid Val",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"species\":\"Cole\",\r\n    \"location\":{\r\n        \"type\":\"Point\",\r\n        \"coordinates\":\"10, 10\"\r\n    },\r\n    \"time\":\"2026-09-17T20:31:00.000Z\",\r\n    \"user\":{\"name\":\"testing\"},\r\n    \"photos\":[\"https://res.cloudinary.com/k5ab8993/image/upload/v1790281910/gedw87xkmctaumumlivy.jpg\"]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/observations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "observations"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Missing Req Field",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"location\":{\r\n        \"type\":\"Point\",\r\n        \"coordinates\":{\r\n            \"longitude\":10.01,\r\n            \"latitude\":10.01\r\n        }\r\n    },\r\n    \"time\":\"2026-09-17T20:31:00.000Z\",\r\n    \"user\":{\"name\":\"testing\"},\r\n    \"photos\":[\"https://res.cloudinary.com/k5ab8993/image/upload/v1790281910/gedw87xkmctaumumlivy.jpg\"]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/observations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "observations"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Unknown Route",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/w",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "w"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5500/health",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5500",
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    },
+    {
+      "key": "resourceId",
+      "value": ""
+    }
+  ]
+}
