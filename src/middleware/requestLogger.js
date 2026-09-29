@@ -5,7 +5,7 @@ module.exports = async (req, res, next) => {
         console.log("PATH: ", req.originalUrl)
         console.log("STATUS: ", res.statusCode)
         console.log("LENGTH: ", `${Date.now() - start} ms`)
-        console.log("================================================")
+        console.log("=".repeat(50))
     })
     next()
 }
