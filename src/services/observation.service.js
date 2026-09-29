@@ -43,6 +43,7 @@ async function create(data) {
     const newObsv = new Observation({id:String(nextId++), ...data})
     // TODO: show what fields are missing
     try {await newObsv.validate()} catch {throw new ApiError(400, "Request missing required fields")}
+    if (Observation.findOne({user:data.user, species:data.species, location:data.location, time:data.time})) throw new ApiError(409, "Duplicate observation")
     await newObsv.save()
 
     return newObsv
@@ -54,7 +55,7 @@ async function replace(user, id, data) {
 
     const obsv = await Observation.findOneAndReplace({id:id}, data)
     if (!obsv) throw new ApiError(404, 'Observation not found')
-    if (userObj.name == obsv.user.name && userObj.uid == obsv.user.uid) throw new ApiError(403, "You do not own this observation")
+    if (userObj.name != obsv.user.name || userObj.uid != obsv.user.uid) throw new ApiError(403, "You do not own this observation")
     
     await Promise.all(data.photos.map(async p => {if (!obsv.photos.includes(p)) await deleteImage(p)}))
 
@@ -67,10 +68,10 @@ async function update(user, id, data) {
 
     const obsv = await Observation.findOneAndUpdate({id:id}, data)
     if (!obsv) throw new ApiError(404, 'Observation not found')
-    if (userObj.name == obsv.user.name && userObj.uid == obsv.user.uid) throw new ApiError(403, "You do not own this observation")
+    if (userObj.name != obsv.user.name || userObj.uid != obsv.user.uid) throw new ApiError(403, "You do not own this observation")
 
-    await Promise.all(data.photos.map(async p => {if (!obsv.photos.includes(p)) await deleteImage(p)}))
-
+    if (Object.hasOwn(data, "photos")) await Promise.all(data.photos.map(async p => {if (!obsv.photos.includes(p)) await deleteImage(p)}))
+        
     return obsv
 }
 
@@ -80,7 +81,7 @@ async function remove(user, id) {
 
     const obsv = await Observation.findOneAndDelete({id:id})
     if (!obsv) throw new ApiError(404, 'Observation not found')
-    if (userObj.name == obsv.user.name && userObj.uid == obsv.user.uid) throw new ApiError(403, "You do not own this observation")
+    if (userObj.name != obsv.user.name || userObj.uid != obsv.user.uid) throw new ApiError(403, "You do not own this observation")
 
     // delete image in cloudinary
     await Promise.all(obsv.photos.map(async p => await deleteImage(p)))

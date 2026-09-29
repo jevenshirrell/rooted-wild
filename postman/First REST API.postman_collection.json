@@ -15,12 +15,23 @@
           "item": [
             {
               "name": "Create",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const body = pm.response.json();\r\n\r\npm.collectionVariables.set(\r\n    \"resourceId\",\r\n    body.data.id\r\n);\r\npm.collectionVariables.set(\r\n    \"resUser\",\r\n    JSON.stringify(body.data.user)\r\n)"
+                    ]
+                  }
+                }
+              ],
               "request": {
                 "method": "POST",
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"species\":\"Cole\",\r\n    \"location\":{\r\n        \"type\":\"Point\",\r\n        \"coordinates\":{\r\n            \"longitude\":10.01,\r\n            \"latitude\":10.01\r\n        }\r\n    },\r\n    \"time\":\"2026-09-17T20:31:00.000Z\",\r\n    \"user\":{\"name\":\"admin\"},\r\n    \"photos\":[\"https://res.cloudinary.com/k5ab8993/image/upload/v1790281910/gedw87xkmctaumumlivy.jpg\"]\r\n}",
+                  "raw": "{\r\n    \"species\":\"Cole\",\r\n    \"location\":{\r\n        \"type\":\"Point\",\r\n        \"coordinates\":{\r\n            \"longitude\":10.01,\r\n            \"latitude\":10.01\r\n        }\r\n    },\r\n    \"time\":\"2026-09-17T20:31:00.000Z\",\r\n    \"user\":{\"name\":\"testing\", \"uid\": \"6ab6f390898754e4b55224fd\"},\r\n    \"photos\":[\r\n        {\"url\":\"https://res.cloudinary.com/k5ab8993/image/upload/v1790650045/cole.jpg\", \"publicId\":\"cole\"}\r\n        ],\r\n    \"id\":17\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -62,13 +73,13 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/observations/1",
+                  "raw": "{{baseUrl}}/observations/{{resourceId}}",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "observations",
-                    "1"
+                    "{{resourceId}}"
                   ]
                 }
               },
@@ -78,10 +89,15 @@
               "name": "Update",
               "request": {
                 "method": "PATCH",
-                "header": [],
+                "header": [
+                  {
+                    "key": "user",
+                    "value": "{{resUser}}"
+                  }
+                ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"species\":\"Not Plains Bison\"\r\n}",
+                  "raw": "{\r\n    \"species\":\"Cat\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -89,13 +105,13 @@
                   }
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/observations/1",
+                  "raw": "{{baseUrl}}/observations/{{resourceId}}",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "observations",
-                    "1"
+                    "{{resourceId}}"
                   ]
                 }
               },
@@ -105,15 +121,20 @@
               "name": "Delete",
               "request": {
                 "method": "DELETE",
-                "header": [],
+                "header": [
+                  {
+                    "key": "user",
+                    "value": "{{resUser}}"
+                  }
+                ],
                 "url": {
-                  "raw": "{{baseUrl}}/observations/17",
+                  "raw": "{{baseUrl}}/observations/{{resourceId}}",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "observations",
-                    "17"
+                    "{{resourceId}}"
                   ]
                 }
               },
@@ -260,6 +281,10 @@
     },
     {
       "key": "resourceId",
+      "value": ""
+    },
+    {
+      "key": "resUser",
       "value": ""
     }
   ]

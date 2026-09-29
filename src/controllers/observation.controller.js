@@ -18,17 +18,17 @@ const create = asyncHandler(async (req, res) => {
 })
 
 const replace = asyncHandler(async (req, res) => {
-    const obsv = await obsvService.replace(JSON.stringify(req.get('user')), req.params.id, req.body)
+    const obsv = await obsvService.replace(req.get('user'), req.params.id, req.body)
     res.status(200).json({success:true, data:obsv})
 })
 
 const update = asyncHandler(async (req, res) => {
-    const obsv = await obsvService.update(JSON.stringify(req.get('user')), req.params.id, req.body)
+    const obsv = await obsvService.update(req.get('user'), req.params.id, req.body)
     res.status(200).json({success:true, data:obsv})
 })
 
 const remove = asyncHandler(async (req, res) => {
-    const obsv = await obsvService.remove(JSON.stringify(req.get('user')), req.params.id)
+    const obsv = await obsvService.remove(req.get('user'), req.params.id)
     res.status(204).send({success:true})
 })
 
