@@ -3,6 +3,10 @@ const Observation = require('../models/observation.js')
 const ApiError = require('../utils/ApiError.js')
 const {cloudName, cloudinaryKey, cloudinarySecret} = require('../config/env.js')
 
+const validFields = {
+    sort:["createdAt", "timesSeen", "id", "species", "time"],
+    filter:["species"]
+}
 
 let nextId = 0
 
@@ -27,8 +31,23 @@ async function deleteImage(p) {
     if (!res.ok) throw new ApiError(500, "Failed to delete image from Cloudinary")
 }
 
-async function findAll() {
-    return await Observation.find({})
+async function findAll(params) {
+    // Challenge 2
+    Object.keys(params).forEach(p => { 
+        if (p !== "sort" && !validFields.filter.includes(p)) {
+            throw new ApiError(400, "Invalid parameter") 
+        }
+    })
+    
+    let filters = {}
+    validFields.filter.forEach(f => {
+        if (Object.keys(params).includes(f) && typeof params[f] === "string") {
+            filters[f] = params[f]
+        }
+    })
+
+    if (Object.hasOwn(params, "sort") && (!(validFields.sort.includes(params.sort) || validFields.sort.includes(params.sort.slice(1))) || typeof params.sort !== "string")) throw new ApiError(400, "Invalid sort field")
+    return await Observation.find(filters).sort(params.sort)
 }
 
 async function findOne(id) {
@@ -41,8 +60,8 @@ async function findOne(id) {
 
 async function create(data) {
     const newObsv = new Observation({id:String(nextId++), ...data})
-    // TODO: show what fields are missing
-    try {await newObsv.validate()} catch {throw new ApiError(400, "Request missing required fields")}
+    try {await newObsv.validate()} catch (err) {throw new ApiError(400, `Request missing (or wrongly formatted) required field(s): ${Object.keys(err.errors).join(', ')}`)}
+    // Challenge 6
     if (Observation.findOne({user:data.user, species:data.species, location:data.location, time:data.time})) throw new ApiError(409, "Duplicate observation")
     await newObsv.save()
 

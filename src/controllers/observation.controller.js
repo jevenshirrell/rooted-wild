@@ -3,7 +3,7 @@ const obsvService = require('../services/observation.service.js')
 
 
 const getAll = asyncHandler(async (req, res) => {
-    const obsvs = await obsvService.findAll()
+    const obsvs = await obsvService.findAll(req.query)
     res.status(200).json({success:true, data:obsvs})    
 })
 
