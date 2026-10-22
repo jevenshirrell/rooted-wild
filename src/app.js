@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express')
 // routes
 const obsvRoutes = require('./routes/observation.routes.js')

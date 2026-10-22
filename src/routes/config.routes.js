@@ -1,3 +1,5 @@
+'use strict';
+
 const {cloudName, uploadPreset} = require('../config/env.js')
 const path = require('path')
 const {Router} = require('express')

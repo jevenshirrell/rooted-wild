@@ -1,3 +1,5 @@
+'use strict';
+
 require('dotenv').config()
 
 const REQUIRED = ['NODE_ENV', 'PORT', 'MONGODB_URI', 'CLOUD_NAME', 'UPLOAD_PRESET', 'CLOUDINARY_KEY', 'CLOUDINARY_SECRET', 'JWT_EXPIRES_IN', 'JWT_SECRET']

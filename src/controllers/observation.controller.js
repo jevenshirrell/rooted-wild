@@ -1,3 +1,5 @@
+'use strict';
+
 const asyncHandler = require('../utils/asyncHandler')
 const obsvService = require('../services/observation.service.js')
 

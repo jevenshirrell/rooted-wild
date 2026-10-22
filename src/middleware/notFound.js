@@ -1,3 +1,5 @@
+'use strict';
+
 const ApiError = require('../utils/ApiError.js')
 
 module.exports = (req, res, next) => {

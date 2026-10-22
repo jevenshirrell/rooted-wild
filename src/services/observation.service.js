@@ -1,3 +1,5 @@
+'use strict';
+
 const crypto = require('crypto')
 const Observation = require('../models/observation.model.js')
 const ApiError = require('../utils/ApiError.js')
