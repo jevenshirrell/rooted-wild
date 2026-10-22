@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const REQUIRED = ['NODE_ENV', 'PORT', 'MONGODB_URI', 'CLOUD_NAME', 'UPLOAD_PRESET', 'CLOUDINARY_KEY', 'CLOUDINARY_SECRET']
+const REQUIRED = ['NODE_ENV', 'PORT', 'MONGODB_URI', 'CLOUD_NAME', 'UPLOAD_PRESET', 'CLOUDINARY_KEY', 'CLOUDINARY_SECRET', 'JWT_EXPIRES_IN', 'JWT_SECRET']
 const missing = REQUIRED.filter(key => !process.env[key])
 
 
@@ -18,5 +18,7 @@ module.exports = {
     uploadPreset:process.env.UPLOAD_PRESET,
     cloudinaryKey:process.env.CLOUDINARY_KEY,
     cloudinarySecret:process.env.CLOUDINARY_SECRET,
-    isProduction:process.env.NODE_ENV === 'production'
+    isProduction:process.env.NODE_ENV === 'production',
+    jwtExpiresIn:process.env.JWT_EXPIRES_IN,
+    jwtSecret:process.env.JWT_SECRET
 }

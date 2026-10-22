@@ -1,5 +1,5 @@
 const crypto = require('crypto')
-const Observation = require('../models/observation.js')
+const Observation = require('../models/observation.model.js')
 const ApiError = require('../utils/ApiError.js')
 const {cloudName, cloudinaryKey, cloudinarySecret} = require('../config/env.js')
 
