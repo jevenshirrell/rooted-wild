@@ -2,11 +2,12 @@
 
 const asyncHandler = require('../utils/asyncHandler')
 const obsvService = require('../services/observation.service.js')
+const {sendSuccess, sendCreated} = require('../utils/apiResponse')
 
 
 const getAll = asyncHandler(async (req, res) => {
     const obsvs = await obsvService.findAll(req.query)
-    res.status(200).json({success:true, data:obsvs})    
+    sendSuccess(res, obsvs)  
 })
 
 const getOne = asyncHandler(async (req, res) => {

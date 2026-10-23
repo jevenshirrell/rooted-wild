@@ -1,26 +1,20 @@
 'use strict';
 
 const {Router} = require('express')
+const {requireAuth} = require('../middleware/auth')
 const obsvController = require('../controllers/observation.controller.js')
 
 const router = Router()
 
-
-// READ --- 200/404
-router.get('/', obsvController.getAll)
-router.get('/:id', obsvController.getOne)
-
-// CREATE --- 201
-router.post('/', obsvController.create)
-
-// REPLACE
-router.put('/:id', obsvController.replace)
-
-// UPDATE --- 200/404
-router.patch('/:id', obsvController.update)
-
-// DELETE --- 204
-router.delete('/:id', obsvController.remove)
+router.route('/')
+    .get(obsvController.getAll)
+    .post(requireAuth, obsvController.create)
+    
+router.route('/:id')
+    .get(obsvController.getOne)
+    .put(obsvController.replace)
+    .patch(obsvController.update)
+    .delete(obsvController.remove)
 
 
 module.exports = router
