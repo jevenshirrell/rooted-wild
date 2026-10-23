@@ -1,10 +1,11 @@
 'use strict';
 
 const express = require('express')
+const {API_PREFIX} = require('./config/constants')
 // routes
-const obsvRoutes = require('./routes/observation.routes.js')
+const routes = require('./routes')
+const healthRoutes = require('./routes/health.routes')
 const viewRoutes = require('./routes/views.routes.js')
-const configRoutes = require('./routes/config.routes.js')
 // middleware
 const reqLogger = require('./middleware/requestLogger.js')
 const notFound = require('./middleware/notFound.js')
@@ -12,25 +13,23 @@ const errorHandler = require('./middleware/errorHandler.js')
 
 
 const app = express()
-app.use(express.json())
+
 
 // === LOGGER ===
 app.use(reqLogger)
+// === DATA ===
+app.use(express.json({limit:'10kb'}))
+app.use(express.urlencoded({extended:true, limit:'10kb'}))
 
 // === ROUTES ===
 // app health 
-app.get('/health', (req, res) => {
-    res.status(200).json({status:'ok'})
-})
+app.get('/health', healthRoutes)
 
 // front end
 app.use('/', viewRoutes)
 
-// CRUD Responses: Create, Read, Update, Delete
-app.use('/api/v1/observations', obsvRoutes)
-
-// api config
-app.use('/api/v1/config', configRoutes)
+// API
+app.use(API_PREFIX, routes)
 
 // === ERRORS ===
 app.use(notFound)

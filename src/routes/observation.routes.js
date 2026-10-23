@@ -12,9 +12,9 @@ router.route('/')
     
 router.route('/:id')
     .get(obsvController.getOne)
-    .put(obsvController.replace)
-    .patch(obsvController.update)
-    .delete(obsvController.remove)
+    .put(requireAuth, obsvController.replace)
+    .patch(requireAuth, obsvController.update)
+    .delete(requireAuth, obsvController.remove)
 
 
 module.exports = router
