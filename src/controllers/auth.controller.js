@@ -7,7 +7,7 @@ const {sendSuccess, sendCreated} = require('../utils/apiResponse')
 const authService = require('../services/auth.service')
 
 /** Auth HTTP Handlers:
- * This will be the same shape as plant.controller, it will read req and lean on the model for rules and answer thru the shared res obj (not in the res body)
+ * This will be the same shape as observation.controller, it will read req and lean on the model for rules and answer thru the shared res obj (not in the res body)
  */
 
 // POST /ap/v1/auth/register

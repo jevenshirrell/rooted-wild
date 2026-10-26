@@ -2,37 +2,32 @@
 
 const asyncHandler = require('../utils/asyncHandler')
 const obsvService = require('../services/observation.service.js')
-const {sendSuccess, sendCreated} = require('../utils/apiResponse')
+const {sendSuccess, sendCreated, sendNoContent} = require('../utils/apiResponse')
 
 
 const getAll = asyncHandler(async (req, res) => {
-    const obsvs = await obsvService.findAll(req.query)
-    sendSuccess(res, obsvs)  
+    const [obsvs, meta] = await obsvService.findAll(req.query)
+    sendSuccess(res, obsvs, 200, meta)
 })
 
 const getOne = asyncHandler(async (req, res) => {
     const obsv = await obsvService.findOne(req.params.id)
-    res.status(200).json({success:true, data:obsv})
+    sendSuccess(res, obsv)
 })
 
 const create = asyncHandler(async (req, res) => {
-    const obsv = await obsvService.create(req.body)
-    res.status(201).json({success:true, data:obsv})
-})
-
-const replace = asyncHandler(async (req, res) => {
-    const obsv = await obsvService.replace(req.get('user'), req.params.id, req.body)
-    res.status(200).json({success:true, data:obsv})
+    const obsv = await obsvService.create(req.body, req.user._id)
+    sendCreated(res, obsv)
 })
 
 const update = asyncHandler(async (req, res) => {
-    const obsv = await obsvService.update(req.get('user'), req.params.id, req.body)
-    res.status(200).json({success:true, data:obsv})
+    const obsv = await obsvService.update(req.params.id, req.body)
+    sendSuccess(res, obsv)
 })
 
 const remove = asyncHandler(async (req, res) => {
-    const obsv = await obsvService.remove(req.get('user'), req.params.id)
-    res.status(204).send({success:true})
+    const obsv = await obsvService.remove(req.params.id)
+    sendNoContent(res)
 })
 
 module.exports = {getAll, getOne, create, replace, update, remove}

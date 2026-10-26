@@ -12,7 +12,7 @@ router.route('/')
     
 router.route('/:id')
     .get(obsvController.getOne)
-    .put(requireAuth, obsvController.replace)
+    .put(requireAuth, obsvController.update)
     .patch(requireAuth, obsvController.update)
     .delete(requireAuth, obsvController.remove)
 

@@ -37,7 +37,7 @@ class ApiError extends Error {
         return new ApiError(404, message, details)
     }
     
-    // 409: valid req, conflicts with the current plant
+    // 409: valid req, conflicts with the current observation
     static conflict(message = 'Conflict', details = null) {
         return new ApiError(409, message, details)
     }

@@ -4,14 +4,70 @@ const crypto = require('crypto')
 const Observation = require('../models/observation.model.js')
 const ApiError = require('../utils/ApiError.js')
 const {cloudName, cloudinaryKey, cloudinarySecret} = require('../config/env.js')
+const {parsePagination, parseSort, buildObsvFilter} = require('../utils/queryFeatures.js')
 
-const validFields = {
-    sort:["createdAt", "timesSeen", "id", "species", "time"],
-    filter:["species"]
+const WRITABLE_FIELDS = ['species', 'location', 'time', 'photos']
+
+
+function pickWritableFields(body={}) {
+    const payload = {}
+    for (const field of WRITABLE_FIELDS) {
+        if(body[field] !== undefined) payload[field] = body[field]
+    }
+    return payload
 }
 
-let nextId = 0
+async function findAll(query) {
+    const filter = buildObsvFilter(query)
+    const sort = parseSort(query.sort)
+    const {page, limit, skip} = parsePagination(query)
 
+    // 2 queries run together rather than sequentially
+    const [obsv, total] = await Promise.all([
+        Observation.find(filter).sort(sort).skip(skip).limit(limit),
+        Observation.countDocuments(filter)
+    ])
+
+    return obsv, {meta:buildMeta({page, limit, total})}
+}
+
+async function findOne(id) {
+    const obsv = await Observation.findById(id)
+    if (!obsv) throw ApiError.notFound("Observation not found")
+    return obsv
+}
+
+async function create(data, userId) {
+    // Challenge 6
+    // if (Observation.findOne({species:data.species, location:data.location, time:data.time})) throw new ApiError(409, "Duplicate observation")
+    
+    const obsv = await Observation.create({
+        ...pickWritableFields(data),
+        ownerId:userId
+    })
+
+    return obsv
+}
+
+async function update(id, data) {
+    const obsv = await Observation.findByIdAndUpdate(id, data, {
+        new:true, runValidators:true
+    })
+    if (!obsv) throw ApiError.notFound('Observation not found')
+
+    if (Object.hasOwn(data, "photos")) await Promise.all(data.photos.map(async p => {if (!obsv.photos.includes(p)) await deleteImage(p)}))
+        
+    return obsv
+}
+
+async function remove(id) {
+    const obsv = await Observation.findByIdAndDelete(id)
+    if (!obsv) throw ApiError.notFound('Observation not found')
+
+    await Promise.all(obsv.photos.map(async p => await deleteImage(p)))
+
+    return obsv
+}
 
 async function deleteImage(p) {
     const timestamp = Math.floor(Date.now() / 1000)
@@ -30,84 +86,9 @@ async function deleteImage(p) {
         method:"POST",
         body:reqBody
     })
-    if (!res.ok) throw new ApiError(500, "Failed to delete image from Cloudinary")
-}
-
-async function findAll(params) {
-    // Challenge 2
-    Object.keys(params).forEach(p => { 
-        if (p !== "sort" && !validFields.filter.includes(p)) {
-            throw new ApiError(400, "Invalid parameter") 
-        }
-    })
+    if (!res.ok) throw new ApiError(500, "Failed to delete image")
     
-    let filters = {}
-    validFields.filter.forEach(f => {
-        if (Object.keys(params).includes(f) && typeof params[f] === "string") {
-            filters[f] = params[f]
-        }
-    })
-
-    if (Object.hasOwn(params, "sort") && (!(validFields.sort.includes(params.sort) || validFields.sort.includes(params.sort.slice(1))) || typeof params.sort !== "string")) throw new ApiError(400, "Invalid sort field")
-    return await Observation.find(filters).sort(params.sort)
-}
-
-async function findOne(id) {
-    if (!/^-?\d+$/.test(id)) throw new ApiError(400, "ID must be a number")
-    const obsv = await Observation.findOne({id:id})
-    if (!obsv) throw new ApiError(404, "Observation not found")
-
-    return obsv
-}
-
-async function create(data) {
-    const newObsv = new Observation({id:String(nextId++), ...data})
-    try {await newObsv.validate()} catch (err) {throw new ApiError(400, `Request missing (or wrongly formatted) required field(s): ${Object.keys(err.errors).join(', ')}`)}
-    // Challenge 6
-    if (Observation.findOne({user:data.user, species:data.species, location:data.location, time:data.time})) throw new ApiError(409, "Duplicate observation")
-    await newObsv.save()
-
-    return newObsv
-}
-
-async function replace(user, id, data) {
-    if (!user) throw new ApiError(401, 'Unauthorized Request')
-    const userObj = JSON.parse(user)
-
-    const obsv = await Observation.findOneAndReplace({id:id}, data)
-    if (!obsv) throw new ApiError(404, 'Observation not found')
-    if (userObj.name != obsv.user.name || userObj.uid != obsv.user.uid) throw new ApiError(403, "You do not own this observation")
-    
-    await Promise.all(data.photos.map(async p => {if (!obsv.photos.includes(p)) await deleteImage(p)}))
-
-    return obsv
-}
-
-async function update(user, id, data) {
-    if (!user) throw new ApiError(401, 'Unauthorized Request')
-    const userObj = JSON.parse(user)
-
-    const obsv = await Observation.findOneAndUpdate({id:id}, data)
-    if (!obsv) throw new ApiError(404, 'Observation not found')
-    if (userObj.name != obsv.user.name || userObj.uid != obsv.user.uid) throw new ApiError(403, "You do not own this observation")
-
-    if (Object.hasOwn(data, "photos")) await Promise.all(data.photos.map(async p => {if (!obsv.photos.includes(p)) await deleteImage(p)}))
-        
-    return obsv
-}
-
-async function remove(user, id) {
-    if (!user) throw new ApiError(401, 'Unauthorized Request')
-    const userObj = JSON.parse(user)
-
-    const obsv = await Observation.findOneAndDelete({id:id})
-    if (!obsv) throw new ApiError(404, 'Observation not found')
-    if (userObj.name != obsv.user.name || userObj.uid != obsv.user.uid) throw new ApiError(403, "You do not own this observation")
-
-    // delete image in cloudinary
-    await Promise.all(obsv.photos.map(async p => await deleteImage(p)))
-
-    return obsv
+    return res
 }
 
 
