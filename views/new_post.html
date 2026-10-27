@@ -10,10 +10,28 @@
     <link rel="stylesheet" href="/styles/upload.css">
 </head>
 <body>
-    <h1>Upload New Observation</h1>
+    <header>
+        <h1>Upload New Observation</h1>
+        <a href="/login">
+            <h1>Login</h1>
+        </a>
+    </header>
     <form id="observationForm">
         <label for="speciesName">Species:</label>
             <input type="text" id="speciesName" required>
+        <label for="class">Class:</label>
+            <select name="class" id="class">
+                <option value="mammal">Mammal</option>
+                <option value="bird">Bird</option>
+                <option value="reptile">Reptile</option>
+                <option value="amphibian">Amphibian</option>
+                <option value="fish">Fish</option>
+                <option value="insect">Insect</option>
+                <option value="arachnid">Arachnid</option>
+                <option value="plant">Plant</option>
+                <option value="fungus">Fungus</option>
+                <option value="other">Other</option>
+            </select>
         <label for="location">Location:</label>
             <input type="hidden" id="latitude" name="latitude">
             <input type="hidden" id="longitude" name="longitude">

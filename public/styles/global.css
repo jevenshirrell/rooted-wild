@@ -26,3 +26,15 @@ body {
     font-weight: 650;
     font-size: 1.5rem;
 }
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px
+}
+a {
+    color: var(--accent);
+    text-decoration: underline;
+}
+a:hover {
+    text-decoration: none;
+}

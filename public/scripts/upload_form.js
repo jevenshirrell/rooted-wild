@@ -10,6 +10,10 @@ $(async function () {
         $('#submitBtn').prop('disabled', true)
 
         try {
+            // check for login
+            if (!localStorage.getItem("rootedWildToken")) {
+                throw new Error("Missing or expired token")
+            }
             // check for map input since it doesn't do it natively
             if (!$("#latitude").val()) {
                 throw new Error("Choose a location")
@@ -18,6 +22,7 @@ $(async function () {
             // create req object
             let observation = {
                 species:$("#speciesName").val(),
+                class:$('#class').val(),
                 location:{
                     type:"Point",
                     coordinates:{
