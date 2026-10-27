@@ -1,6 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose')
+const {CLASS_VALUES} = require('../config/constants')
 
 
 const observationSchema = new mongoose.Schema({
@@ -10,6 +11,12 @@ const observationSchema = new mongoose.Schema({
         trim:true,
         minlength:[2, 'species must be at least 2 characters long'],
         maxlength:[100, 'species cannot exceed 100 characters']
+    },
+    class:{
+        type:String,
+        required:[true, 'class required'],
+        trim:true,
+        enum:{values:CLASS_VALUES, message:'{VALUE} is not a supported class'}
     },
     location:{
         type:{

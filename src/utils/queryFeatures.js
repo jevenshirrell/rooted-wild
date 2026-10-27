@@ -1,6 +1,6 @@
 'use strict'
 
-const { PAGINATION, SORTABLE_FIELDS, DEFAULT_SORT } = require("../config/constants")
+const { PAGINATION, SORTABLE_FIELDS, DEFAULT_SORT, CLASS_VALUES } = require("../config/constants")
 const ApiError = require('./ApiError')
 
 /** serves as a platform for helper funcs
@@ -100,10 +100,12 @@ function escapeFunction(text) {
 function buildObsvFilter(query={}) {
     let filter = {}
 
-    // TODO: type filtering
-    // if (query.species) {
-    //     filter.species = String(query.species)
-    // }
+    if (query.class) {
+        if (!CLASS_VALUES.includes(query.class)) {
+            throw ApiError.badRequest(`'${query.class}' is not a supported class. Valid: ${CLASS_VALUES.join(', ')}`)
+        }
+        filter.class = query.class
+    }
     if (query.q) {
         // 'i' makes the search case insensitive
         const pattern = new RegExp(escapeFunction(String(query.q).trim()), 'i')

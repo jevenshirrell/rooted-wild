@@ -6,7 +6,7 @@ const ApiError = require('../utils/ApiError.js')
 const {cloudName, cloudinaryKey, cloudinarySecret} = require('../config/env.js')
 const {parsePagination, parseSort, buildObsvFilter, buildMeta} = require('../utils/queryFeatures.js')
 
-const WRITABLE_FIELDS = ['species', 'location', 'time', 'photos']
+const WRITABLE_FIELDS = ['species', 'location', 'time', 'photos', 'class']
 
 
 function pickWritableFields(body={}) {

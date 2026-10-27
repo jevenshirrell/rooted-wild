@@ -1,6 +1,20 @@
+const CLASSES = Object.freeze({
+  MAMMAL: "mammal",
+  BIRD: "bird",
+  REPTILE: "reptile",
+  AMPHIBIAN: "amphibian",
+  FISH: "fish",
+  INSECT: "insect",
+  ARACHNID: "arachnid",
+  PLANT: "plant",
+  FUNGUS: "fungus",
+  OTHER: "other",
+})
+const CLASS_VALUES = Object.freeze(Object.values(CLASSES))
+
 /**Client tags for sorting*/
 const SORTABLE_FIELDS = Object.freeze([
-    'createdAt', 'updatedAt', 'species', 'time'
+    'createdAt', 'updatedAt', 'species', 'time', 'class'
 ])
 
 const PAGINATION = Object.freeze({
@@ -26,7 +40,7 @@ const DEFAULT_SORT = Object.freeze({createdAt: -1})
 
 module.exports = {
     // stage 1
-    SORTABLE_FIELDS, PAGINATION, API_PREFIX,
+    CLASSES, CLASS_VALUES, SORTABLE_FIELDS, PAGINATION, API_PREFIX,
     // stage 2
     ROLES, ROLE_VALUES, AUTH, DEFAULT_SORT
 }
