@@ -4,7 +4,7 @@ const crypto = require('crypto')
 const Observation = require('../models/observation.model.js')
 const ApiError = require('../utils/ApiError.js')
 const {cloudName, cloudinaryKey, cloudinarySecret} = require('../config/env.js')
-const {parsePagination, parseSort, buildObsvFilter} = require('../utils/queryFeatures.js')
+const {parsePagination, parseSort, buildObsvFilter, buildMeta} = require('../utils/queryFeatures.js')
 
 const WRITABLE_FIELDS = ['species', 'location', 'time', 'photos']
 
@@ -28,7 +28,7 @@ async function findAll(query) {
         Observation.countDocuments(filter)
     ])
 
-    return obsv, {meta:buildMeta({page, limit, total})}
+    return [obsv, {meta:buildMeta({page, limit, total})}]
 }
 
 async function findOne(id) {
@@ -92,4 +92,4 @@ async function deleteImage(p) {
 }
 
 
-module.exports = {findAll, findOne, create, replace, update, remove}
+module.exports = {findAll, findOne, create, update, remove}

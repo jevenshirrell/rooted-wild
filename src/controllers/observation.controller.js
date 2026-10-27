@@ -30,4 +30,4 @@ const remove = asyncHandler(async (req, res) => {
     sendNoContent(res)
 })
 
-module.exports = {getAll, getOne, create, replace, update, remove}
+module.exports = {getAll, getOne, create, update, remove}

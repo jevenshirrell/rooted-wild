@@ -98,8 +98,12 @@ function escapeFunction(text) {
  * @throws {ApiError} 400 on a val that isn't allowed
  */
 function buildObsvFilter(query={}) {
-    const filter = {}
+    let filter = {}
 
+    // TODO: type filtering
+    // if (query.species) {
+    //     filter.species = String(query.species)
+    // }
     if (query.q) {
         // 'i' makes the search case insensitive
         const pattern = new RegExp(escapeFunction(String(query.q).trim()), 'i')

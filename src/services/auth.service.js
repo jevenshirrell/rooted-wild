@@ -1,9 +1,6 @@
 'use strict'
 
-const asyncHandler = require('../utils/asyncHandler')
-const {sendSuccess, sendCreated} = require('../utils/apiResponse')
 const ApiError = require('../utils/ApiError')
-const {signToken} = require('../utils/jwt')
 const User = require('../models/user.model')
 
 
@@ -25,9 +22,11 @@ async function loginUser(data) {
 
     // .select('+password') overrides schema that select:false for just this query, comparing the hash is the goal
     const user = await User.findOne({email:String(email).toLowerCase().trim()}).select('+password')
-    if (!user || !(await user.comparedPassword(password))) {
+    if (!user || !(await user.comparePassword(password))) {
         throw ApiError.unauthorized('Invalid email or password')
     }
+
+    return user
 }
 
 

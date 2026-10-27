@@ -4,6 +4,7 @@
 
 const asyncHandler = require('../utils/asyncHandler')
 const {sendSuccess, sendCreated} = require('../utils/apiResponse')
+const {signToken} = require('../utils/jwt')
 const authService = require('../services/auth.service')
 
 /** Auth HTTP Handlers:
