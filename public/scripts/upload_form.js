@@ -60,11 +60,14 @@ $(async function () {
             // post to API
             console.log(observation)
             const apiRes = await fetch('/api/v1/observations', {
-                method:'POST',
-                headers: { 'Content-Type': 'application/json' },
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem("rootedWildToken")}`
+                },
                 body: JSON.stringify(observation)
             })
-            if (!apiRes.ok) throw new Error(apiRes)
+            if (!apiRes.ok) throw new Error(JSON.stringify(await apiRes.json()))
 
         } catch (err) {
             $('#submitBtn').val('Submit')

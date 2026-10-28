@@ -23,7 +23,7 @@ app.use(express.urlencoded({extended:true, limit:'10kb'}))
 
 // === ROUTES ===
 // app health 
-app.get('/health', healthRoutes)
+app.use('/health', healthRoutes)
 
 // front end
 app.use('/', viewRoutes)

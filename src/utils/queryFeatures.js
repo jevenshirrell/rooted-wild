@@ -109,8 +109,8 @@ function buildObsvFilter(query={}) {
     if (query.q) {
         // 'i' makes the search case insensitive
         const pattern = new RegExp(escapeFunction(String(query.q).trim()), 'i')
-        // $or checks both fields and keeps a observation that matches either
-        filter = {species:pattern}
+
+        filter.$or = [{species:pattern}]
     }
     return filter
 }

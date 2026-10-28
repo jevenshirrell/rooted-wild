@@ -50,7 +50,7 @@ async function create(data, userId) {
 }
 
 async function update(id, data) {
-    const obsv = await Observation.findByIdAndUpdate(id, data, {
+    const obsv = await Observation.findByIdAndUpdate(id, pickWritableFields(data), {
         new:true, runValidators:true
     })
     if (!obsv) throw ApiError.notFound('Observation not found')
