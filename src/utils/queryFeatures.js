@@ -106,6 +106,9 @@ function buildObsvFilter(query={}) {
         }
         filter.class = query.class
     }
+    if (query.ownerId) {
+        filter.ownerId = String(query.ownerId)
+    }
     if (query.q) {
         // 'i' makes the search case insensitive
         const pattern = new RegExp(escapeFunction(String(query.q).trim()), 'i')

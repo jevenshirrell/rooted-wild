@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema(
         email:{
             type:String,
             required:[true,'email required'],
+            trim:true,
             // unique is an index, not a validator, mongoose wont throw validation errors for dupes
             // failure will result in 409
             unique:true,
